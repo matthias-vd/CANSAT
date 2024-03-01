@@ -15,3 +15,4 @@ Begin met uw Pico losgekoppeld van USB. Houd de BOOTSEL-knop ingedrukt en sluit 
 ### RFM69
 
 - Change Mode Timout
+- NO SCK PIN
