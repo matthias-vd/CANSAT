@@ -1,18 +1,16 @@
-# CANSAT
+# CanSat by SpecSat
 
-Dit bevat testcode voor Raspberry Pi Pico
+This repository contains all files used by the "SpecSat"-team of CanSat, during the Belgian 2023-2024 competition.
 
-## Besturingssystemen
+## Operating System
 
-Getest voor MicroPython 1.18 en CircuitPython 8.0.4 (Zie 'Besturingssystemen')
+Tested on MicroPython 1.18 and CircuitPython 8.0.4
 
-**Installeren van CircuitPython:** 
-Begin met uw Pico losgekoppeld van USB. Houd de BOOTSEL-knop ingedrukt en sluit de Pico aan op USB terwijl u de knop ingedrukt houdt (niet loslaten!). Blijf de BOOTSEL-knop ingedrukt houden totdat de RPI-RP2 drive verschijnt. Je zult een nieuw schijfstation zien verschijnen met de naam RPI-RP2. Sleep het bestand .uf2-bestand naar RPI-RP2.
-
-
-## Veel Voorkomende Foutmeldingen
+## Common errors
 
 ### RFM69
 
 - Change Mode Timout
+Check wiring
 - NO SCK PIN
+Check wiring
