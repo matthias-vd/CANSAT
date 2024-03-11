@@ -13,12 +13,13 @@ import adafruit_rfm69
 import digitalio
 
 # - Variables -
-FREQ = 433.1 
+FREQ = 433.0
 NODE_ID = 120
 BASESTATION_ID = 100
 SLEEP = 0.5
 SHELL = 1
 RADIO = 1
+SDCARD = 1
 
 # - Initial Setup -
 # Spectroscopy
@@ -35,11 +36,16 @@ my_as7265x.set_measurement_mode(AS7265X_sparkfun.MEASUREMENT_MODE_6CHAN_ONE_SHOT
 #        print("Geen data van sensor")    
             
 # SD-card
-SPI_SD = busio.SPI(GP10, MOSI=GP11, MISO=GP12)
-CS_SD = GP13
-sd = sdcardio.SDCard(SPI_SD, CS_SD)
-vfs = storage.VfsFat(sd)
-storage.mount(vfs, '/sd')
+try: 
+    SPI_SD = busio.SPI(GP10, MOSI=GP11, MISO=GP12)
+    CS_SD = GP13
+    sd = sdcardio.SDCard(SPI_SD, CS_SD)
+    vfs = storage.VfsFat(sd)
+    storage.mount(vfs, '/sd')
+except OSError:
+    print("SD not connected")
+    SDCARD = 0
+    
 
 # RFM69
 SPI_RFM = busio.SPI(board.GP6, board.GP7, board.GP4)
@@ -64,7 +70,8 @@ rfm69.destination = BASESTATION_ID # Send to specific node 100
 bmp280 = adafruit_bmp280.Adafruit_BMP280_I2C(i2c)
 
 #Create and open file:
-with open("/sd/pico.txt", "w") as file:
+#with open("/sd/pico.txt", "w") as file:
+while True:
     # Measurement spectrometer
     my_as7265x.take_measurements()
     all_values = my_as7265x.get_value(1)
@@ -78,8 +85,11 @@ with open("/sd/pico.txt", "w") as file:
     if SHELL == 1:
         print(msg_rfm)
         print()
-        print()
     if RADIO == 1:
-        rfm69.send(msg_rfm)
-    
+        rfm69.send(bytes("test","utf-8"))
+        #ack = rfm69.send(msg_rfm)
+        #print(ack)
+        #print(msg_rfm)
+    #if SDCARD = 1:
+        
     sleep(SLEEP)
