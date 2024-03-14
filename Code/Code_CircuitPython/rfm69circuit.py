@@ -8,7 +8,7 @@ import adafruit_rfm69
 
 
 # Define radio parameters.
-RADIO_FREQ_MHZ = 433.0  # Frequency of the radio in Mhz. Must match your
+RADIO_FREQ_MHZ = 433.3  # Frequency of the radio in Mhz. Must match your
 # module! Can be a value like 915.0, 433.0, etc.
 ENCRYPTION_KEY = b"\x01\x02\x03\x04\x05\x06\x07\X08\x01\x02\x03\x04\x05\x06\x07\x08"
 NODE_ID = 120
