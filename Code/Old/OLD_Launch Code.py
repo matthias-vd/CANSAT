@@ -121,6 +121,6 @@ while True:
         
     end_loop = time.monotonic()
     delta_time = end_loop-begin_loop
-    #print(delta_time) UITVOERING LOOP DUURT GEMIDDELD 1,65s! DATA WORDT DUS NIET 1 MAAL PER SECONDE NAAR GROUND GESTUURD.
+    print(delta_time) #UITVOERING LOOP DUURT GEMIDDELD 1,65s! DATA WORDT DUS NIET 1 MAAL PER SECONDE NAAR GROUND GESTUURD.
         
-    sleep(SLEEP-(delta_time))
+    #sleep(SLEEP-(delta_time))
