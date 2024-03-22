@@ -33,7 +33,7 @@ def spectral_measurement(spec,measurements):
 
 def send_package(rfm,bmp_values,measurements):
     if(rfm != None and bmp_values != None):
-        rfm.send(bytes("test","utf-8"))
+        rfm.send(bytes("herman miller","utf-8"))
         rfm.send(bytes(str(bmp_values),"utf-8"))
         print("PACKAGE SENT")
         #ack = rfm69.send(measurements)

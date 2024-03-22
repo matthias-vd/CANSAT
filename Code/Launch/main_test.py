@@ -14,15 +14,14 @@ import adafruit_rfm69
 import digitalio
 
 #### INITS
-
-FREQ = 433
+FREQ = 433.0
 NODE_ID = 120
 BASESTATION_ID = 100
 SHELL = 1
-SLEEP = 2
+SLEEP = 3
 p0 = 101325  # Pressure at sea level in Pa
-T0 = 288.15  # Standard temperature at sea level in K
-h0 = 5
+T0 = 293.15  # Standard temperature at sea level in K
+h0 = 10 # beginhoogte
 
 #### COMMUNICATION BUSSES
 
@@ -54,6 +53,7 @@ while True:
     helper.bmp_measurement(bmp,bmp_values,measurements)
     helper.spectral_measurement(spec,measurements)
     h = helper.calculate_height(bmp,p0,T0,h0,h,max_h)
+    print(h)
 
     # COMMUNICATION
     helper.send_package(rfm,bmp_values,measurements)
