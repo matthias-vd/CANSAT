@@ -33,8 +33,8 @@ def spectral_measurement(spec,measurements):
 
 def send_package(rfm,bmp_values,measurements):
     if(rfm != None and bmp_values != None):
-        #rfm.send(bytes("agressief verdonckje","utf-8"))
-        rfm.send(bytes(str(bmp_values),"utf-8"))
+        rfm.send(bytes("kom terug het is al getest u case is klaar","utf-8"))
+        #rfm.send(bytes(str(bmp_values),"utf-8"))
         #rfm.send(bytes(str(measurements),"utf-8"))
         #rfm.send(bytes(str(rfm),"utf-8"))
         #print((str(measurements)))
@@ -44,11 +44,24 @@ def send_package(rfm,bmp_values,measurements):
         print("NO PACKAGE SENT")    
     
 def save_measurements_sd(sd,measurements):
-    if sd != None:
-        with open("/sd/measurements.txt", "a") as file:
-            file.write(str(measurements) + '\n')
-    else:
-        print("NOT SAVED ON SD")
+    try:
+        if sd != None:
+            with open("/sd/measurements.txt", "a") as file:
+                file.write(str(measurements) + '\n')
+        else:
+            print("NOT SAVED ON SD")
+    except OSError:
+        print("Connectie SD-kaart verloren mid-flight")
+        """try:
+            print("SD-kaart proberen herinitialiseren")
+            spi_sd = init.init_spi_sd()
+            return busio.SPI(GP10, MOSI=GP11, MISO=GP8)
+            sd = init.init_sd(spi_sd)
+            sd = sdcardio.SDCard(spi_sd, board.GP9)
+            vfs = storage.VfsFat(sd)
+            storage.mount(vfs, '/sd')
+        except:
+            print("SD-kaart initialisatie mislukt!")"""
 
 def save_measurements_local(measurements):
     pass
