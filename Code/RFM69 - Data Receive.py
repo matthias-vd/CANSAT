@@ -3,7 +3,7 @@ from rfm69 import RFM69
 import time
 
 FREQ           = 433.1
-ENCRYPT == 0
+ENCRYPT = 0
 
 
 
