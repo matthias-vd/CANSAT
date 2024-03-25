@@ -1,10 +1,10 @@
 import math
 
-def bmp_measurement(bmp,bmp_values,measurements):
+def bmp_measurement(bmp,measurements):
     if bmp != None:
-        bmp_values = [bmp.temperature,bmp.pressure]
-        measurements.append(bmp_values)
-        #print(h)    
+        measurements.append(bmp.temperature)
+        measurements.append(bmp.pressure)
+        return bmp.temperature,bmp.pressure
 
 def calculate_height(bmp,p0,T0,h0,h,max_h):
     
@@ -33,9 +33,12 @@ def spectral_measurement(spec,measurements):
 
 def send_package(rfm,bmp_values,measurements):
     if(rfm != None and bmp_values != None):
-        rfm.send(bytes("herman miller","utf-8"))
+        #rfm.send(bytes("agressief verdonckje","utf-8"))
         rfm.send(bytes(str(bmp_values),"utf-8"))
-        print("PACKAGE SENT")
+        #rfm.send(bytes(str(measurements),"utf-8"))
+        #rfm.send(bytes(str(rfm),"utf-8"))
+        #print((str(measurements)))
+        #print("PACKAGE SENT")
         #ack = rfm69.send(measurements)
     else:
         print("NO PACKAGE SENT")    
@@ -43,7 +46,7 @@ def send_package(rfm,bmp_values,measurements):
 def save_measurements_sd(sd,measurements):
     if sd != None:
         with open("/sd/measurements.txt", "a") as file:
-            file.write(measurements)
+            file.write(str(measurements) + '\n')
     else:
         print("NOT SAVED ON SD")
 

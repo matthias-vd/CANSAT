@@ -15,14 +15,14 @@ def init_i2c():
     return busio.I2C(board.GP17, board.GP16)
 
 def init_spi_sd():
-    return busio.SPI(board.GP10, board.GP11, board.GP12)
+    return busio.SPI(GP10, MOSI=GP11, MISO=GP8)
 
 def init_spi_rfm():
     return busio.SPI(board.GP6, board.GP7, board.GP4)
 
 def init_sd(spi_sd):
     try:
-        sd = sdcardio.SDCard(spi_sd, board.GP13)
+        sd = sdcardio.SDCard(spi_sd, board.GP9)
         vfs = storage.VfsFat(sd)
         storage.mount(vfs, '/sd')
         print("SD INITIALISED")
