@@ -19,9 +19,11 @@ NODE_ID = 120
 BASESTATION_ID = 100
 SHELL = 1
 SLEEP = 2
+DEBUGRFM = 0
 p0 = 101325  # Pressure at sea level in Pa
 T0 = 293.15  # Standard temperature at sea level in K
 h0 = 10 # beginhoogte
+
 
 #### COMMUNICATION BUSSES
 
@@ -53,7 +55,6 @@ while True:
     bmp_values = helper.bmp_measurement(bmp,measurements)
     helper.spectral_measurement(spec,measurements)
     h = helper.calculate_height(bmp,p0,T0,h0,h,max_h)
-    print("hoogte: ",h)
 
     # COMMUNICATION
     helper.send_package(rfm,bmp_values,measurements)
@@ -62,7 +63,7 @@ while True:
     helper.save_measurements_sd(sd,measurements)
     helper.save_measurements_local(measurements)
     #helper.print_shell(SHELL,measurements)
-    helper.print_shell(SHELL,bmp_values)
+    #helper.print_shell(SHELL,bmp_values)
     
     # BUZZER
     helper.start_buzzer(h,max_h)          
@@ -73,6 +74,6 @@ while True:
     try:    
         time.sleep(SLEEP-(delta_time))
     except:
-        print("Delta tijd kleiner!")
+        print("ERROR: Delta tijd kleiner!")
         
     

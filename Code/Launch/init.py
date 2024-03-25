@@ -11,6 +11,7 @@ import adafruit_bmp280
 import adafruit_rfm69
 import digitalio
 
+
 def init_i2c():
     return busio.I2C(board.GP17, board.GP16)
 
