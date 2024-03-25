@@ -3,6 +3,11 @@ from rfm69 import RFM69
 import time
 
 FREQ           = 433.1
+ENCRYPT == 0
+
+
+
+
 ENCRYPTION_KEY = b"\x01\x02\x03\x04\x05\x06\x07\x08\x01\x02\x03\x04\x05\x06\x07\x08"
 NODE_ID        = 100 # ID of this node
 
@@ -15,7 +20,8 @@ rfm.frequency_mhz = FREQ
 
 # Optionally set an encryption key (16 byte AES key). MUST match both
 # on the transmitter and receiver (or be set to None to disable/the default).
-rfm.encryption_key = ( ENCRYPTION_KEY )
+if ENCRYPT == 1:
+    rfm.encryption_key = ( ENCRYPTION_KEY )
 rfm.node = NODE_ID # This instance is the node 123
 
 print( 'Freq            :', rfm.frequency_mhz )
@@ -37,3 +43,4 @@ while True:
 		packet_text = str(packet, "ascii")
 		print("Received (ASCII):", packet_text)
 		print("-"*40)
+		print("RSSI (-dBm): ", rfm.rssi)
