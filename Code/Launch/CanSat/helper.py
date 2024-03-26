@@ -12,7 +12,6 @@ def bmp_measurement(bmp,measurements):
         measurements.append(bmp.pressure)
         return bmp.temperature,bmp.pressure       
 def calculate_height(bmp,p0,T0,h0,h,max_h):
-    
     ### TODO p0 en T0 bepalen bij opstart satelliet?    
     alpha = -0.0065   # Temperature lapse rate in K/m
     g = 9.80665  # Acceleration due to gravity in m/s^2
@@ -23,12 +22,11 @@ def calculate_height(bmp,p0,T0,h0,h,max_h):
     return h
 def spectral_measurement(spec,measurements):
     if spec !=  None:
-        spec.take_measurements()
-        all_values = spec.get_value(1)
         spec.take_measurements_with_bulb()
+        all_values = spec.get_value(1)
+        spec.take_measurements()
         all_values_bulb = spec.get_value(1)
         measurements.append(all_values_bulb)
-        print("SPECTRAL MEASUREMENT SUCCEEDED")
     else:
         print("ERROR: NO SPECTRAL MEASUREMENT")
 

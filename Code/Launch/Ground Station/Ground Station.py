@@ -41,6 +41,6 @@ while True:
 		print( "Received (raw bytes):", packet )
 		# And decode to ASCII text
 		packet_text = str(packet, "ascii")
+		print("RSSI (-dBm): ", rfm.rssi)
 		print("Received (ASCII):", packet_text)
 		print("-"*40)
-		print("RSSI (-dBm): ", rfm.rssi)

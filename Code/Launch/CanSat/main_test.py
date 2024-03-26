@@ -50,7 +50,6 @@ while True:
         seconds = begin_loop-start
         measurements = [seconds]
         bmp_values = []
-        
         #MEASURE AND CALCULATE
         try:
             bmp_values = helper.bmp_measurement(bmp,measurements)
@@ -61,7 +60,6 @@ while True:
             helper.spectral_measurement(spec,measurements)
         except OSError:
             print("ERROR: Connectie spectroscopiesensor verloren mid-flight")
-            
         #HEIGTH MEASUREMENT    
         try:
             h = helper.calculate_height(bmp,p0,T0,h0,h,max_h)
@@ -69,18 +67,16 @@ while True:
             print("ERROR: Connectie BMP verloren mid-flight")
         except AttributeError:
             print("ERROR: BMP levert geen temperatuurwaarden")
-            
         # COMMUNICATION
         try:
             helper.send_package(rfm,bmp_values,measurements)
         except TimeoutError:
             print("ERROR: RFM69 fout bekabeled!")
-        
         # SAVING/PRINTING VALUES
         try:
             helper.save_measurements_sd(sd,measurements)
         except OSError:
-            print("ERROR: Connectie SD-kaart verloren mid-flight")
+            print("ERROR: Connectie SD-kaart verloren")
             """try:
                 print("SD-kaart proberen herinitialiseren")
                 spi_sd = init.init_spi_sd()
@@ -99,7 +95,9 @@ while True:
             
         end_loop = time.monotonic()
         delta_time = end_loop-begin_loop
-        #print(delta_time) #UITVOERING LOOP DUURT GEMIDDELD 1,65s! DATA WORDT DUS NIET 1 MAAL PER SECONDE NAAR GROUND GESTUURD.
+        #print("Main Loop Finished")
+        print(delta_time) #UITVOERING LOOP DUURT GEMIDDELD 1,65s! DATA WORDT DUS NIET 1 MAAL PER SECONDE NAAR GROUND GESTUURD.
+        #time.sleep(100)
         try:    
             time.sleep(SLEEP-(delta_time))
         except:
