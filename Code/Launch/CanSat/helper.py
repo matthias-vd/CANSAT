@@ -28,6 +28,8 @@ def calculate_height(bmp,p0,T0,h0,h,max_h):
         return h
     except OSError:
         print("ERROR: Connectie BMP verloren mid-flight")
+    except AttributeError:
+        print("ERROR: BMP levert geen temperatuurwaarden")
 
 def spectral_measurement(spec,measurements):
     if spec !=  None:
@@ -49,12 +51,14 @@ def send_package(rfm,bmp_values,measurements):
         try:
         #rfm.send(bytes("kom terug het is al getest u case is klaar","utf-8"))
             rfm.send(bytes(str(bmp_values),"utf-8"))
+            print(bmp_values)
         #rfm.send(bytes(str(measurements),"utf-8"))
         #rfm.send(bytes(str(rfm),"utf-8"))
         #print((str(measurements)))
         #print("PACKAGE SENT")
         #ack = rfm69.send(measurements)
         #MEASUREMENT_RFM = MEASUREMENT_RFM + 1
+            #print("PACKAGE SENT")
         except TimeoutError:
             print("ERROR: RFM69 fout bekabeled!")
     else:
@@ -70,16 +74,15 @@ def save_measurements_sd(sd,measurements):
             print("ERROR: NOT SAVED ON SD")
     except OSError:
         print("ERROR: Connectie SD-kaart verloren mid-flight")
-        """try:
+        try:
             print("SD-kaart proberen herinitialiseren")
             spi_sd = init.init_spi_sd()
-            return busio.SPI(GP10, MOSI=GP11, MISO=GP8)
             sd = init.init_sd(spi_sd)
             sd = sdcardio.SDCard(spi_sd, board.GP9)
             vfs = storage.VfsFat(sd)
             storage.mount(vfs, '/sd')
-        except:
-            print("SD-kaart initialisatie mislukt!")"""
+        except Exception as error:
+            print("SD-kaart herinitialisatie mislukt!", error)
 
 def save_measurements_local(measurements):
     pass
