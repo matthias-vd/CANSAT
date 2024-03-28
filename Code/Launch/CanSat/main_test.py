@@ -11,6 +11,7 @@ import AS7265X_sparkfun
 from AS7265X_sparkfun import AS7265X
 import adafruit_bmp280
 import adafruit_rfm69
+import adafruit_sgp30
 import digitalio
 import sys
 
@@ -22,7 +23,7 @@ SHELL = 1
 SLEEP = 2
 p0 = 101325  # Pressure at sea level in Pa
 T0 = 293.15  # Standard temperature at sea level in K
-h0 = 10 # beginhoogte
+h0 = 5 # beginhoogte
 
 
 #### COMMUNICATION BUSSES
@@ -37,6 +38,7 @@ sd = init.init_sd(spi_sd)
 rfm = init.init_rfm69(spi_rfm,FREQ,NODE_ID,BASESTATION_ID)
 bmp = init.init_bmp280(i2c)
 spec = init.init_as7265x(i2c)
+sgp = init.init_sgp30(i2c)
 
 #### LETSGOO
 
@@ -89,6 +91,14 @@ while True:
         helper.save_measurements_local(measurements)
         #helper.print_shell(SHELL,measurements)
         #helper.print_shell(SHELL,bmp_values)
+        
+        #####SGP30#####"
+        
+        try:
+            helper.co2_measurement(sgp,measurements)
+        except OSError:
+            print("ERROR: Connectie CO2-sensor verloren")
+            
         
         # BUZZER
         helper.start_buzzer(h,max_h)          

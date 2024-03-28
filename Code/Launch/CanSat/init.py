@@ -9,11 +9,12 @@ import AS7265X_sparkfun
 from AS7265X_sparkfun import AS7265X
 import adafruit_bmp280
 import adafruit_rfm69
+import adafruit_sgp30
 import digitalio
 
 
 def init_i2c():
-    return busio.I2C(board.GP17, board.GP16)
+    return busio.I2C(board.GP17, board.GP16,frequency=100000)
 
 def init_spi_sd():
     return busio.SPI(GP10, MOSI=GP11, MISO=GP8)
@@ -64,4 +65,13 @@ def init_as7265x(i2c):
         return my_as7265x
     except ValueError:
         print("AS7265x not connected")
+        return None
+    
+def init_sgp30(i2c):
+    try:
+        sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
+        print("SGP30 INITIALISED")
+        return sgp30
+    except ValueError:
+        print("SGP30 not connected")
         return None

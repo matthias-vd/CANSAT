@@ -29,6 +29,14 @@ def spectral_measurement(spec,measurements):
         measurements.append(all_values_bulb)
     else:
         print("ERROR: NO SPECTRAL MEASUREMENT")
+        
+def co2_measurement(sgp,measurements):
+    if sgp != None:
+        eCO2, TVOC = sgp.iaq_measure()
+        print("eCO2 = %d ppm \t TVOC = %d ppb" % (eCO2, TVOC))
+        measurements.append([eCO2,TVOC])
+    else:
+        print("ERROR: NO CO2 MEASUREMENT")
 
 def send_package(rfm,bmp_values,measurements):
     if(rfm != None and bmp_values != None):
