@@ -2,7 +2,7 @@ from machine import SPI, Pin
 from rfm69 import RFM69
 import time
 
-FREQ           = 433.1
+FREQ = 433.1
 ENCRYPT = 0
 
 ENCRYPTION_KEY = b"\x01\x02\x03\x04\x05\x06\x07\x08\x01\x02\x03\x04\x05\x06\x07\x08"
@@ -19,25 +19,14 @@ rfm.frequency_mhz = FREQ
 # on the transmitter and receiver (or be set to None to disable/the default).
 if ENCRYPT == 1:
     rfm.encryption_key = ( ENCRYPTION_KEY )
-rfm.node = NODE_ID # This instance is the node 123
+rfm.node = NODE_ID 
 
 print( 'Freq            :', rfm.frequency_mhz )
 print( 'NODE            :', rfm.node )
 
 print("Waiting for packets...")
 while True:
-	packet = rfm.receive( with_ack=True )
-	# Optionally change the receive timeout from its default of 0.5 seconds:
-	# packet = rfm.receive(timeout=5.0)
-	# If no packet was received during the timeout then None is returned.
-	if packet is None:
-		# Packet has not been received
-		pass
-	else:
-		# Received a packet!
-		print( "Received (raw bytes):", packet )
-		# And decode to ASCII text
-		packet_text = str(packet, "ascii")
-		print("RSSI (-dBm): ", rfm.rssi)
-		print("Received (ASCII):", packet_text)
-		print("-"*40)
+    packet = rfm.receive(with_ack=True)
+    if packet != None:
+        print("Received (ASCII):", str(packet, "ascii"))
+        print("RSSI (-dBm): ", rfm.last_rssi)
