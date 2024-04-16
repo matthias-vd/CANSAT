@@ -30,3 +30,5 @@ while True:
     if packet != None:
         print("Received (ASCII):", str(packet, "ascii"))
         print("RSSI (-dBm): ", rfm.last_rssi)
+    	with open("/measurements.txt", "a") as localstorage:
+    		localstorage.write(str(packet) + '\n')
