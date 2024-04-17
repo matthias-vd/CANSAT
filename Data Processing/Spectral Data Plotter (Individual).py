@@ -33,8 +33,8 @@ def button_click():
 
 def plot_spectrum(spectrums, height):
     plt.plot(wavelengths, spectrums)
-    plt.xlabel("wavelength in nm")
-    plt.ylabel("counts/intensity")
+    plt.xlabel("Wavelength in nm")
+    plt.ylabel("Counts/Intensity")
     plt.title("Spectral Measurements")
     filename="Plot For Height = "+str(height)+"m.png" # Saving the plot as a .png file
     plt.savefig(filename)
