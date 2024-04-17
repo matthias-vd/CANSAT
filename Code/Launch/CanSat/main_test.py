@@ -2,6 +2,7 @@ import init
 import helper
 from board import *
 from time import *
+#ik ben een appel
 import busio
 import sdcardio
 import storage
