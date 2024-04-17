@@ -3,11 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 
-
-
-#import numpy as np
-
-heights = []
+heights_dropdown = []
 spectrums = []
 wavelengths = [410,435,460,485,510,535,560,585,610,645,680,705,730,760,810,860,900,940]
 
@@ -17,38 +13,36 @@ def read_csv_file(file_path):
         with open(file_path, 'r') as csv_file:
             csv_reader = csv.reader(csv_file)
             for row in csv_reader:
-                heights.append(row[0])
+                heights_dropdown.append(row[0]) #Definieer in welke kolompositie de hoogte staat in de dataset
                 spectrum_strings = row[1:30]
                 spectrum_floats = [float(x) for x in spectrum_strings] 
                 spectrums.append(spectrum_floats)
-                print(type(spectrums[0][0]))
+                #print(type(spectrums[0][0]))
                 #print(row)
     except FileNotFoundError:
         print(f"File {file_path} not found.")
 
 
 def button_click():
-    selected_item = dropdown.get()
-    index = heights.index(selected_item)
-    plot_spectrum(spectrums[index],selected_item)
-    print(index)
-    print("Selected item:", selected_item)
+    height = dropdown.get()
+    index = heights_dropdown.index(height)
+    plot_spectrum(spectrums[index],height)
+    #print(index)
+    print("Height:", height, "m")
     
 
-def plot_spectrum(s, h):
-    plt.plot(wavelengths, s)
+def plot_spectrum(spectrums, height):
+    plt.plot(wavelengths, spectrums)
     plt.xlabel("wavelength in nm")
-    plt.ylabel("counts")
+    plt.ylabel("counts/intensity")
     plt.title("Spectral Measurements")
-    filename="Plot Results Height = "+str(h)+".png"
-    # Saving the plot as a .png file
+    filename="Plot For Height = "+str(height)+"m.png" # Saving the plot as a .png file
     plt.savefig(filename)
     plt.show()
-    
-    
-    
+    plt.close()
+
 # Read file
-file_path = 'measurements.csv'  # Replace 'example.csv' with your CSV file path
+file_path = 'measurements.csv'# Replace with CSV file 
 read_csv_file(file_path)
 
 # Create the main window
@@ -56,13 +50,13 @@ root = tk.Tk()
 root.title("Height")
 
 # Create a dropdown box
-options = heights
+options = heights_dropdown
 dropdown = ttk.Combobox(root, values=options)
-dropdown.pack(side=tk.LEFT, padx=5, pady=5)
+dropdown.pack(side=tk.LEFT, padx=30, pady=30)
 
 # Create a button
 button = tk.Button(root, text="Next", command=button_click)
-button.pack(side=tk.LEFT, padx=5, pady=5)
+button.pack(side=tk.LEFT, padx=30, pady=30)
 
 
 
