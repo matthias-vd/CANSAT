@@ -62,13 +62,13 @@ while True:
         try:
             bmp_values = helper.bmp_measurement(bmp,measurements)
         except OSError:
-            print("ERROR: Connectie BMP verloren mid-flight")
+            print("ERROR: Lost connection to BMP!")
             
         #SPECTRAL MEASUREMENT
         try:
             helper.spectral_measurement(spec,measurements)
         except OSError:
-            print("ERROR: Connectie spectroscopiesensor verloren mid-flight")
+            print("ERROR: Lost connection to AS7265x!")
             
         #HEIGHT MEASUREMENT    
         try:
@@ -92,7 +92,7 @@ while True:
         try:
             helper.send_package(rfm,bmp_values,measurements)
         except TimeoutError:
-            print("ERROR: RFM69 fout bekabeled!")
+            print("ERROR: RFM69 wired in the wrong way!")
             
         # SAVING/PRINTING VALUES
         try:
@@ -113,7 +113,7 @@ while True:
         try:
             helper.co2_measurement(sgp,measurements)
         except OSError:
-            print("ERROR: Connectie CO2-sensor verloren")
+            print("ERROR: Lost connection to CO2-sensor!")
               
         helper.save_measurements_local(measurements)
         if SHELL == 1:
@@ -125,7 +125,7 @@ while True:
         try:    
             time.sleep(SLEEP-(delta_time))
         except:
-            print("ERROR: Delta tijd kleiner!")
+            print("ERROR: Delta time smaller than 0!")
             
         if BUZZER == 1:
             helper.start_buzzer(h,max_h)
