@@ -50,8 +50,6 @@ sgp = init.init_sgp30(i2c)
 start = time.monotonic()
 h = h0
 max_h = 0
-#buzzer = PWM(Pin(15))
-#buzzer.freq(500)
 
 while True:
     try:
@@ -59,6 +57,7 @@ while True:
         seconds = begin_loop-start
         measurements = [seconds]
         bmp_values = []
+        
         #MEASURE AND CALCULATE
         try:
             bmp_values = helper.bmp_measurement(bmp,measurements)
@@ -87,6 +86,7 @@ while True:
         if(h < max_h and HEIGHT_BUFFER[1] > HEIGHT_BUFFER[5]):
             helper.start_buzzer(h,max_h)   
         else:
+            pass
         
         # COMMUNICATION
         try:
@@ -129,4 +129,6 @@ while True:
     except KeyboardInterrupt:
         print("Manuele interrupt")
         sys.exit()
+    except:
+        pass
 
