@@ -35,7 +35,6 @@ def co2_measurement(sgp,measurements):
         eCO2, TVOC = sgp.iaq_measure()
         #print("eCO2 = %d ppm \t TVOC = %d ppb" % (eCO2, TVOC))
         measurements.append(eCO2)
-        measurements.append(TVOC)
     else:
         print("ERROR: NO CO2 MEASUREMENT")
 

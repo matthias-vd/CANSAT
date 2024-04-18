@@ -14,8 +14,10 @@ import digitalio
 
 
 def init_i2c():
-    return busio.I2C(board.GP17, board.GP16,frequency=100000)
-
+    try:
+        return busio.I2C(board.GP17, board.GP16,frequency=100000)
+    except RuntimeError:
+        print("ERROR: I2C failed to initialize, no pull up on SDA/SCL")
 def init_spi_sd():
     return busio.SPI(GP10, MOSI=GP11, MISO=GP8)
 
@@ -30,7 +32,7 @@ def init_sd(spi_sd):
         print("SD INITIALISED")
         return sd
     except OSError as e:
-        print("SD not connected", e)
+        print("ERROR: SD not connected", e)
         return None
 
 def init_rfm69(spi_rfm,freq,node_id,basestation_id):
@@ -45,7 +47,7 @@ def init_rfm69(spi_rfm,freq,node_id,basestation_id):
         print("RFM INITIALISED")
         return rfm69
     except RuntimeError:
-        print("RFM not connected")
+        print("ERROR: RFM not connected")
         return None
 
 def init_bmp280(i2c):
@@ -54,8 +56,10 @@ def init_bmp280(i2c):
         print("BMP INITIALISED")
         return bmp280
     except ValueError:
-        print("BMP not connected")
+        print("ERROR: BMP not connected")
         return None
+    except AttributeError:
+        print("ERROR: I2C failed to initialize, BMP fails too")
 
 # Spectroscopy
 def init_as7265x(i2c):
@@ -65,8 +69,9 @@ def init_as7265x(i2c):
         print("AS7265x INITIALISED")
         return my_as7265x
     except ValueError:
-        print("AS7265x not connected")
-        return None
+        print("ERROR: AS7265x not connected")
+    except AttributeError:
+        print("ERROR: I2C failed to initialize, AS7265x fails too")
     
 def init_sgp30(i2c):
     try:
@@ -75,4 +80,5 @@ def init_sgp30(i2c):
         return sgp30
     except ValueError:
         print("ERROR: SGP30 not connected")
-        return None
+    except AttributeError:
+        print("ERROR: I2C failed to initialize, SGP30 fails too")
