@@ -26,8 +26,9 @@ SLEEP = 2
 p0 = 101325  # Pressure at sea level in Pa
 T0 = 293.15  # Standard temperature at sea level in K
 h0 = 5 # beginhoogte
-HEIGTH_BUFFER = []
+HEIGHT_BUFFER = []
 counter = 0
+SHELL = 1
 
 #### COMMUNICATION BUSSES
 
@@ -72,34 +73,41 @@ while True:
             bmp_values = helper.bmp_measurement(bmp,measurements)
         except OSError:
             print("ERROR: Connectie BMP verloren mid-flight")
+            
         #SPECTRAL MEASUREMENT
         try:
             helper.spectral_measurement(spec,measurements)
         except OSError:
             print("ERROR: Connectie spectroscopiesensor verloren mid-flight")
-        #HEIGTH MEASUREMENT    
+            
+        #HEIGHT MEASUREMENT    
         try:
             h = helper.calculate_height(bmp,p0,T0,h0,h,max_h)
         except OSError:
             print("ERROR: Connectie BMP verloren mid-flight")
         except AttributeError:
             print("ERROR: BMP levert geen temperatuurwaarden")
-        HEIGTH_BUFFER.append(h)
-        del HEIGTH_BUFFER[:-5]
-        print("Heigth buffer: ",HEIGTH_BUFFER)
+        HEIGHT_BUFFER.append(h)
+        del HEIGHT_BUFFER[:-5]
+        print("HEIGHT buffer: ",HEIGHT_BUFFER)
         counter = counter + 1
-        """if(counter >= 5 and HEIGTH_BUFFER[5] < HEIGTH_BUFFER[4] and HEIGTH_BUFFER[4] < HEIGTH_BUFFER[3] and HEIGTH_BUFFER[3] < HEIGTH_BUFFER[2] and HEIGTH_BUFFER[2] < HEIGTH_BUFFER[1]):
+        
+        # BUZZER
+        helper.start_buzzer(h,max_h)   
+        """if(counter >= 5 and HEIGHT_BUFFER[5] < HEIGHT_BUFFER[4] and HEIGHT_BUFFER[4] < HEIGHT_BUFFER[3] and HEIGHT_BUFFER[3] < HEIGHT_BUFFER[2] and HEIGHT_BUFFER[2] < HEIGHT_BUFFER[1]):
             #TURN BUZZER ON
             print("BUZZER AAN")
             #buzzer.duty_u16(1000)
         else:
             print("BUZZER UIT")
             #buzzer.duty_u16(0)"""
+        
         # COMMUNICATION
         try:
             helper.send_package(rfm,bmp_values,measurements)
         except TimeoutError:
             print("ERROR: RFM69 fout bekabeled!")
+            
         # SAVING/PRINTING VALUES
         try:
             helper.save_measurements_sd(sd,measurements)
@@ -120,20 +128,14 @@ while True:
             helper.co2_measurement(sgp,measurements)
         except OSError:
             print("ERROR: Connectie CO2-sensor verloren")
-            
-        
-        # BUZZER
-        helper.start_buzzer(h,max_h)          
-            
+              
         helper.save_measurements_local(measurements)
-        helper.print_shell(SHELL,measurements)
-        #helper.print_shell(SHELL,bmp_values)
+        if SHELL == 1:
+            helper.print_shell(SHELL,measurements)
+            helper.print_shell(SHELL,bmp_values)
         
         end_loop = time.monotonic()
         delta_time = end_loop-begin_loop
-        #print("Main Loop Finished")
-        #print(delta_time) #UITVOERING LOOP DUURT GEMIDDELD 1,65s! DATA WORDT DUS NIET 1 MAAL PER SECONDE NAAR GROUND GESTUURD.
-        #time.sleep(100)
         try:    
             time.sleep(SLEEP-(delta_time))
         except:
