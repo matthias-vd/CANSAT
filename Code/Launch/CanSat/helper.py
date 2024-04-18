@@ -41,14 +41,14 @@ def co2_measurement(sgp,measurements):
 def send_package(rfm,bmp_values,measurements):
     if(rfm != None and bmp_values != None):
         rfm.send(bytes(str(bmp_values),"utf-8"))
-        #print(bmp_values)
     else:
         print("ERROR: NO PACKAGE SENT")    
     
-def save_measurements_sd(sd,measurements):
+def save_measurements_sd(sd,measurements,h):
     if sd != None:
         with open("/sd/measurements.csv", "a") as file:
             file.write(str(measurements) + '\n')
+            file.write("Height: ",h + '\n')
                 #MEASUREMENT_SD = MEASUREMENT_SD + 1
     else:
         print("ERROR: NOT SAVED ON SD")

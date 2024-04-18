@@ -76,7 +76,7 @@ while True:
         except OSError:
             print("ERROR: Connectie BMP verloren mid-flight")
         except AttributeError:
-            print("ERROR: BMP levert geen temperatuurwaarden")
+            print("ERROR: BMP is not returning any temperatures")
         HEIGHT_BUFFER.append(h)
         del HEIGHT_BUFFER[:-5]
         print("HEIGHT buffer: ",HEIGHT_BUFFER)
@@ -96,7 +96,7 @@ while True:
             
         # SAVING/PRINTING VALUES
         try:
-            helper.save_measurements_sd(sd,measurements)
+            helper.save_measurements_sd(sd,measurements,h)
         except OSError:
             print("ERROR: Connectie SD-kaart verloren")
             """try:
