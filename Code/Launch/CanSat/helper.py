@@ -10,8 +10,7 @@ def bmp_measurement(bmp,measurements):
     if bmp != None:
         measurements.append(bmp.temperature)
         measurements.append(bmp.pressure)
-        return bmp.temperature,bmp.pressure     
-      
+        return bmp.temperature,bmp.pressure       
 def calculate_height(bmp,p0,T0,h0,h,max_h):
     ### TODO p0 en T0 bepalen bij opstart satelliet?    
     alpha = -0.0065   # Temperature lapse rate in K/m
@@ -21,7 +20,6 @@ def calculate_height(bmp,p0,T0,h0,h,max_h):
     if h>max_h:
         max_h=h
     return h
-
 def spectral_measurement(spec,measurements):
     if spec !=  None:
         spec.take_measurements_with_bulb()
@@ -35,8 +33,9 @@ def spectral_measurement(spec,measurements):
 def co2_measurement(sgp,measurements):
     if sgp != None:
         eCO2, TVOC = sgp.iaq_measure()
-        print("eCO2 = %d ppm \t TVOC = %d ppb" % (eCO2, TVOC))
-        measurements.append([eCO2,TVOC])
+        #print("eCO2 = %d ppm \t TVOC = %d ppb" % (eCO2, TVOC))
+        measurements.append(eCO2)
+        measurements.append(TVOC)
     else:
         print("ERROR: NO CO2 MEASUREMENT")
 
@@ -55,15 +54,22 @@ def save_measurements_sd(sd,measurements):
     else:
         print("ERROR: NOT SAVED ON SD")
 def save_measurements_local(measurements):
-    #pass
-    with open("/measurements.csv", "a") as f:
-        f.write(str(all_values_bulb) + '\n')
+    pass
+    #with open("/measurements.csv", "a") as f:
+    #    f.write(str(all_values_bulb) + '\n')
     #print("test")
     
 def start_buzzer(h,max_h):
     if  max_h > 500 and h < 100:
-            
+    try:
+        buzzer = PWMOut(board.GP14, duty_cycle=2**16, variable_frequency = True)
+    except:
+        pass
+    
+    play_tune(buzzer, tune) 
+        
 def print_shell(SHELL,measurements):
         if SHELL == 1:
             print(measurements)
     
+

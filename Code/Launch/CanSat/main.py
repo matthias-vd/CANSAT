@@ -15,7 +15,7 @@ import adafruit_sgp30
 import digitalio
 import sys
 from pwmio import PWMOut 
-from music import play_tune
+from buzzer import play_tune
 
 #### INITS
 FREQ = 433.1
@@ -29,6 +29,7 @@ h0 = 5 # beginhoogte
 HEIGHT_BUFFER = []
 counter = 0
 SHELL = 1
+tune = ['E5:0.2','D8:0.2'] 
 
 #### COMMUNICATION BUSSES
 
@@ -53,16 +54,6 @@ max_h = 0
 #buzzer.freq(500)
 
 while True:
-    tune = ['E5:0.2','D8:0.2'] 
-     # set up buzzer with variable frequency
-    try:
-        buzzer = PWMOut(board.GP14, duty_cycle=2**16, variable_frequency = True)
-    except:
-        pass
-    
-    play_tune(buzzer, tune) 
-    
-    
     try:
         begin_loop = time.monotonic()
         seconds = begin_loop-start
@@ -93,14 +84,9 @@ while True:
         counter = counter + 1
         
         # BUZZER
-        helper.start_buzzer(h,max_h)   
-        """if(counter >= 5 and HEIGHT_BUFFER[5] < HEIGHT_BUFFER[4] and HEIGHT_BUFFER[4] < HEIGHT_BUFFER[3] and HEIGHT_BUFFER[3] < HEIGHT_BUFFER[2] and HEIGHT_BUFFER[2] < HEIGHT_BUFFER[1]):
-            #TURN BUZZER ON
-            print("BUZZER AAN")
-            #buzzer.duty_u16(1000)
+        if(h < max_h and HEIGHT_BUFFER[1] > HEIGHT_BUFFER[5]):
+            helper.start_buzzer(h,max_h)   
         else:
-            print("BUZZER UIT")
-            #buzzer.duty_u16(0)"""
         
         # COMMUNICATION
         try:
@@ -143,3 +129,4 @@ while True:
     except KeyboardInterrupt:
         print("Manuele interrupt")
         sys.exit()
+

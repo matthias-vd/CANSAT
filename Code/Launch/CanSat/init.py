@@ -40,6 +40,7 @@ def init_rfm69(spi_rfm,freq,node_id,basestation_id):
     try:
         rfm69 = adafruit_rfm69.RFM69(spi_rfm, CS_RFM, RESET_RFM, freq)
         rfm69.node = node_id
+        rfm69.tx_power = 20
         rfm69.encryption_key = "SPECSATVLOT2024"
         print("RFM INITIALISED")
         return rfm69
@@ -73,5 +74,5 @@ def init_sgp30(i2c):
         print("SGP30 INITIALISED")
         return sgp30
     except ValueError:
-        print("SGP30 not connected")
+        print("ERROR: SGP30 not connected")
         return None
