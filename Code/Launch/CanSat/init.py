@@ -15,18 +15,18 @@ import digitalio
 
 def init_i2c():
     try:
-        return busio.I2C(board.GP17, board.GP16,frequency=100000)
+        return busio.I2C(board.GP9, board.GP8,frequency=100000)
     except RuntimeError:
         print("ERROR: I2C failed to initialize, no pull up on SDA/SCL")
 def init_spi_sd():
-    return busio.SPI(GP10, MOSI=GP11, MISO=GP8)
+    return busio.SPI(GP14, MOSI=GP15, MISO=GP12)
 
 def init_spi_rfm():
     return busio.SPI(board.GP6, board.GP7, board.GP4)
 
 def init_sd(spi_sd):
     try:
-        sd = sdcardio.SDCard(spi_sd, board.GP9)
+        sd = sdcardio.SDCard(spi_sd, board.GP13)
         vfs = storage.VfsFat(sd)
         storage.mount(vfs, '/sd')
         print("SD INITIALISED")
@@ -43,7 +43,7 @@ def init_rfm69(spi_rfm,freq,node_id,basestation_id):
         rfm69 = adafruit_rfm69.RFM69(spi_rfm, CS_RFM, RESET_RFM, freq)
         rfm69.node = node_id
         rfm69.tx_power = 20
-        rfm69.encryption_key = "SPECSATVLOT2024"
+        #rfm69.encryption_key = b"SPECSATVLOT2024"
         print("RFM INITIALISED")
         return rfm69
     except RuntimeError:
@@ -60,7 +60,7 @@ def init_bmp280(i2c):
         return None
     except AttributeError:
         print("ERROR: I2C failed to initialize, BMP fails too")
-
+        return None
 # Spectroscopy
 def init_as7265x(i2c):
     try:        
@@ -70,9 +70,10 @@ def init_as7265x(i2c):
         return my_as7265x
     except ValueError:
         print("ERROR: AS7265x not connected")
+        return None
     except AttributeError:
         print("ERROR: I2C failed to initialize, AS7265x fails too")
-    
+        return None
 def init_sgp30(i2c):
     try:
         sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
@@ -80,5 +81,7 @@ def init_sgp30(i2c):
         return sgp30
     except ValueError:
         print("ERROR: SGP30 not connected")
+        return None
     except AttributeError:
         print("ERROR: I2C failed to initialize, SGP30 fails too")
+        return None

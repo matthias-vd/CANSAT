@@ -20,6 +20,7 @@ def calculate_height(bmp,p0,T0,h0,h,max_h):
     if h>max_h:
         max_h=h
     return h
+    measurements.append(h)
 def spectral_measurement(spec,measurements):
     if spec !=  None:
         spec.take_measurements_with_bulb()
@@ -41,17 +42,22 @@ def co2_measurement(sgp,measurements):
 def send_package(rfm,bmp_values,measurements):
     if(rfm != None and bmp_values != None):
         rfm.send(bytes(str(bmp_values),"utf-8"))
+        #print(TRANSMIT_BUFFER)
     else:
         print("ERROR: NO PACKAGE SENT")    
     
-def save_measurements_sd(sd,measurements,h):
+def save_measurements_sd(sd,measurements):
     if sd != None:
-        with open("/sd/measurements.csv", "a") as file:
-            file.write(str(measurements) + '\n')
-            file.write("Height: ",h + '\n')
-                #MEASUREMENT_SD = MEASUREMENT_SD + 1
+        try:
+            with open("/sd/measurements.csv", "a") as file:
+                file.write(str(measurements) + '\n')
+                    #MEASUREMENT_SD = MEASUREMENT_SD + 1
+        except TypeError:
+                print("ERROR: SD Type Error")
+        except:
+            pass
     else:
-        print("ERROR: NOT SAVED ON SD")
+            print("ERROR: NOT SAVED ON SD")
 def save_measurements_local(measurements):
     pass
     #with open("/measurements.csv", "a") as f:
@@ -60,7 +66,7 @@ def save_measurements_local(measurements):
     
 def start_buzzer(h,max_h):
     try:
-        buzzer = PWMOut(board.GP14, variable_frequency = True)
+        buzzer = PWMOut(board.GP26, variable_frequency = True)
         try:
             play_tune(buzzer, tune)
         except NameError:
