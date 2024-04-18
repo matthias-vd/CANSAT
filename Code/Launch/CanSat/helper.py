@@ -53,16 +53,14 @@ def save_measurements_sd(sd,measurements):
     else:
         print("ERROR: NOT SAVED ON SD")
 def save_measurements_local(measurements):
-    pass
-    #with open("/measurements.txt", "a") as f:
-    #    f.write(str(all_values_bulb) + '\n')
+    #pass
+    with open("/measurements.txt", "a") as f:
+        f.write(str(all_values_bulb) + '\n')
     #print("test")
     
 def start_buzzer(h,max_h):
     if  max_h > 500 and h < 100:
-        ### ADD CODE TO START BUZZER
-        print("buzzer aan")
-        
+                
 def print_shell(SHELL,measurements):
         if SHELL == 1:
             print(measurements)
