@@ -84,7 +84,7 @@ while True:
         
         # BUZZER
         if(h < max_h and h < 100):
-            helper.start_buzzer(h,max_h)   
+            BUZZER = 1 
         else:
             pass
         
@@ -126,6 +126,11 @@ while True:
             time.sleep(SLEEP-(delta_time))
         except:
             print("ERROR: Delta tijd kleiner!")
+            
+        if BUZZER == 1:
+            helper.start_buzzer(h,max_h)
+        else:
+            pass
     except KeyboardInterrupt:
         print("Manuele interrupt")
         sys.exit()

@@ -60,12 +60,15 @@ def save_measurements_local(measurements):
     #print("test")
     
 def start_buzzer(h,max_h):
-    if  max_h > 500 and h < 100:
     try:
         buzzer = PWMOut(board.GP14, variable_frequency = True)
+        try:
+            play_tune(buzzer, tune)
+        except NameError:
+            print("ERROR: NO BUZZER CONNECTED")
     except:
         pass
-    play_tune(buzzer, tune) 
+
         
 def print_shell(SHELL,measurements):
         if SHELL == 1:
