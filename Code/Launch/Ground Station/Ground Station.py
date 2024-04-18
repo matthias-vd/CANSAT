@@ -3,7 +3,7 @@ from rfm69 import RFM69
 import time
 
 FREQ = 433.1
-ENCRYPT = 0
+ENCRYPT = 1
 
 ENCRYPTION_KEY = "SPECSATVLOT2024"
 NODE_ID        = 100 # ID of this node
