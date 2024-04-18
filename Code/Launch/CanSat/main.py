@@ -83,7 +83,7 @@ while True:
         counter = counter + 1
         
         # BUZZER
-        if(h < max_h and HEIGHT_BUFFER[1] > HEIGHT_BUFFER[5]):
+        if(h < max_h and h < 100):
             helper.start_buzzer(h,max_h)   
         else:
             pass
