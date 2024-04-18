@@ -10,7 +10,8 @@ def bmp_measurement(bmp,measurements):
     if bmp != None:
         measurements.append(bmp.temperature)
         measurements.append(bmp.pressure)
-        return bmp.temperature,bmp.pressure       
+        return bmp.temperature,bmp.pressure     
+      
 def calculate_height(bmp,p0,T0,h0,h,max_h):
     ### TODO p0 en T0 bepalen bij opstart satelliet?    
     alpha = -0.0065   # Temperature lapse rate in K/m
@@ -20,6 +21,7 @@ def calculate_height(bmp,p0,T0,h0,h,max_h):
     if h>max_h:
         max_h=h
     return h
+
 def spectral_measurement(spec,measurements):
     if spec !=  None:
         spec.take_measurements_with_bulb()
@@ -47,20 +49,20 @@ def send_package(rfm,bmp_values,measurements):
     
 def save_measurements_sd(sd,measurements):
     if sd != None:
-        with open("/sd/measurements.txt", "a") as file:
+        with open("/sd/measurements.csv", "a") as file:
             file.write(str(measurements) + '\n')
                 #MEASUREMENT_SD = MEASUREMENT_SD + 1
     else:
         print("ERROR: NOT SAVED ON SD")
 def save_measurements_local(measurements):
     #pass
-    with open("/measurements.txt", "a") as f:
+    with open("/measurements.csv", "a") as f:
         f.write(str(all_values_bulb) + '\n')
     #print("test")
     
 def start_buzzer(h,max_h):
     if  max_h > 500 and h < 100:
-                
+            
 def print_shell(SHELL,measurements):
         if SHELL == 1:
             print(measurements)

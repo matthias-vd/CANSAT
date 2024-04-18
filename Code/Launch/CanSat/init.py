@@ -40,7 +40,7 @@ def init_rfm69(spi_rfm,freq,node_id,basestation_id):
     try:
         rfm69 = adafruit_rfm69.RFM69(spi_rfm, CS_RFM, RESET_RFM, freq)
         rfm69.node = node_id
-        #rfm69.encryption_key = b"\x01\x02\x03\x04\x05\x06\x07\X08\x01\x02\x03\x04\x05\x06\x07\x08"
+        rfm69.encryption_key = "SPECSATVLOT2024"
         print("RFM INITIALISED")
         return rfm69
     except RuntimeError:

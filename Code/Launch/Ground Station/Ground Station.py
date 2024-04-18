@@ -5,7 +5,7 @@ import time
 FREQ = 433.1
 ENCRYPT = 0
 
-ENCRYPTION_KEY = b"\x01\x02\x03\x04\x05\x06\x07\x08\x01\x02\x03\x04\x05\x06\x07\x08"
+ENCRYPTION_KEY = "SPECSATVLOT2024"
 NODE_ID        = 100 # ID of this node
 
 spi = SPI(0, sck=Pin(6), mosi=Pin(7), miso=Pin(4), baudrate=50000, polarity=0, phase=0, firstbit=SPI.MSB)
@@ -30,5 +30,5 @@ while True:
     if packet != None:
         print("Received (ASCII):", str(packet, "ascii"))
         print("RSSI (-dBm): ", rfm.last_rssi)
-    	with open("/measurements.txt", "a") as localstorage:
+    	with open("/measurements.csv", "a") as localstorage:
     		localstorage.write(str(packet) + '\n')
