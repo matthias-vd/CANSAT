@@ -58,18 +58,21 @@ while True:
             bmp_values = helper.bmp_measurement(bmp,measurements)
         except OSError:
             print("ERROR: Connectie BMP verloren mid-flight")
+            
         #SPECTRAL MEASUREMENT
         try:
             helper.spectral_measurement(spec,measurements)
         except OSError:
             print("ERROR: Connectie spectroscopiesensor verloren mid-flight")
-        #HEIGTH MEASUREMENT    
+
+        #HEIGHT MEASUREMENT    
         try:
             h = helper.calculate_height(bmp,p0,T0,h0,h,max_h)
         except OSError:
             print("ERROR: Connectie BMP verloren mid-flight")
         except AttributeError:
             print("ERROR: BMP levert geen temperatuurwaarden")
+
         # COMMUNICATION
         try:
             helper.send_package(rfm,bmp_values,measurements)
@@ -92,23 +95,19 @@ while True:
         helper.save_measurements_local(measurements)
         #helper.print_shell(SHELL,measurements)
         #helper.print_shell(SHELL,bmp_values)
-        
+
         #####SGP30#####"
-        
         try:
             helper.co2_measurement(sgp,measurements)
         except OSError:
             print("ERROR: Connectie CO2-sensor verloren")
-            
-        
+
         # BUZZER
         helper.start_buzzer(h,max_h)          
             
         end_loop = time.monotonic()
         delta_time = end_loop-begin_loop
-        #print("Main Loop Finished")
-        print(delta_time) #UITVOERING LOOP DUURT GEMIDDELD 1,65s! DATA WORDT DUS NIET 1 MAAL PER SECONDE NAAR GROUND GESTUURD.
-        #time.sleep(100)
+        print(delta_time)
         try:    
             time.sleep(SLEEP-(delta_time))
         except:
