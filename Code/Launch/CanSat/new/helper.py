@@ -1,6 +1,4 @@
 import math
-import init
-import time
 
 #### COUNTERS
 """MEASUREMENT_SPEC = 0
@@ -15,15 +13,13 @@ def bmp_measurement(bmp,measurements):
         return bmp.temperature,bmp.pressure       
 def calculate_height(bmp,p0,T0,h0,h,max_h):
     ### TODO p0 en T0 bepalen bij opstart satelliet?    
-    alpha = -0.0098   # Temperature lapse rate in K/m
+    alpha = -0.0065   # Temperature lapse rate in K/m
     g = 9.80665  # Acceleration due to gravity in m/s^2
     R = 8.314    # Universal gas constant in J/(mol·K)
     h = (bmp.temperature/alpha) * ((bmp.pressure/p0)**(-R*alpha/g)-1) + h0
     if h>max_h:
         max_h=h
-    #measurements.append(h)
     return h
- 
 def spectral_measurement(spec,measurements):
     if spec !=  None:
         spec.take_measurements_with_bulb()
@@ -39,46 +35,41 @@ def co2_measurement(sgp,measurements):
         eCO2, TVOC = sgp.iaq_measure()
         #print("eCO2 = %d ppm \t TVOC = %d ppb" % (eCO2, TVOC))
         measurements.append(eCO2)
+        measurements.append(TVOC)
     else:
         print("ERROR: NO CO2 MEASUREMENT")
 
 def send_package(rfm,bmp_values,measurements):
     if(rfm != None and bmp_values != None):
         rfm.send(bytes(str(bmp_values),"utf-8"))
-        #print(TRANSMIT_BUFFER)
+        #print(bmp_values)
     else:
         print("ERROR: NO PACKAGE SENT")    
     
 def save_measurements_sd(sd,measurements):
     if sd != None:
-        try:
-            with open("/sd/measurements.csv", "a") as file:
-                file.write(str(measurements) + '\n')
-                    #MEASUREMENT_SD = MEASUREMENT_SD + 1
-        except TypeError:
-                print("ERROR: SD Type Error")
-        except:
-            pass
+        with open("/sd/measurements.csv", "a") as file:
+            file.write(str(measurements) + '\n')
+                #MEASUREMENT_SD = MEASUREMENT_SD + 1
     else:
-            print("ERROR: NOT SAVED ON SD")
+        print("ERROR: NOT SAVED ON SD")
 def save_measurements_local(measurements):
     pass
     #with open("/measurements.csv", "a") as f:
     #    f.write(str(all_values_bulb) + '\n')
     #print("test")
     
-def start_buzzer(buzzer,frequency,duration):
-    period = 1.0 / frequency
-    delay = period / 2
-    cycles = int(duration * frequency)
+"""def start_buzzer(h,max_h):
+    if  max_h > 500 and h < 100:
+        try:
+            buzzer = PWMOut(board.GP14, duty_cycle=2**16, variable_frequency = True)
+        except:
+            pass
+    
+    play_tune(buzzer, tune)""" 
         
-    for _ in range(cycles):
-        buzzer.value = True
-        time.sleep(delay)
-
 def print_shell(SHELL,measurements):
         if SHELL == 1:
             print(measurements)
     
-
 

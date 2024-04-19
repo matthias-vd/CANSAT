@@ -14,10 +14,8 @@ import digitalio
 
 
 def init_i2c():
-    try:
-        return busio.I2C(board.GP9, board.GP8,frequency=100000)
-    except RuntimeError:
-        print("ERROR: NO SPI")
+    return busio.I2C(board.GP9, board.GP8,frequency=100000)
+
 def init_spi_sd():
     return busio.SPI(GP14, MOSI=GP15, MISO=GP12)
 
@@ -78,13 +76,3 @@ def init_sgp30(i2c):
     except ValueError:
         print("ERROR: SGP30 not connected")
         return None
-    
-def init_buzzer(buzzer_pin):
-    #try:
-    buzzer = digitalio.DigitalInOut(buzzer_pin)
-    buzzer.direction = digitalio.Direction.OUTPUT
-    return buzzer
-
-
-    #except:
-     #   pass
